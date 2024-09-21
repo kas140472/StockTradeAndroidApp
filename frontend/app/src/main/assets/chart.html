@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Highcharts Chart</title>
+    <!-- Include Highcharts library -->
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/accessibility.js"></script>
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+</head>
+<body>
+<!-- Container for the chart -->
+<div id="chartContainer" style="width:100%; height:400px;"></div>
+
+<script>
+    // Fetch data from backend API
+    fetch('https://kas25-25.wl.r.appspot.com/company-profile-poly?symbol=AAPL')
+        .then(response => response.text())
+        .then(data => {
+          var parsedData = JSON.parse(data);
+          (async () => {
+            const polygonData = parsedData.polygon_data;
+            const timestamps = [];
+            const closePrices = [];
+            const volumes = [];
+            for (let i = 0; i < polygonData.results.length; i++) {
+              timestamps.push(polygonData.results[i].t);
+              closePrices.push(polygonData.results[i].c);
+              volumes.push(polygonData.results[i].v);
+            }
+            let maxVolume = Math.max(...volumes);
+            let minStockPrice = Math.min(...closePrices);
+
+            const stockPriceVsDate = [];
+            const volumeVsDate = [];
+            for (let i = 0; i < polygonData.results.length; i++) {
+              stockPriceVsDate.push([timestamps[i], closePrices[i]]);
+              volumeVsDate.push([timestamps[i], volumes[i]]);
+            }
+
+            var today = new Date();
+            var todayDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+
+            Highcharts.stockChart('container', {
+              subtitle: {
+                  text: '<a class="polygon-link" href="https://polygon.io/" target="_blank">Source: Polygon.io</a>'
+              },
+              rangeSelector: {
+                buttons: [{
+                    type: 'day',
+                    count: 7,
+                    text: '7d'
+                }, {
+                    type: 'day',
+                    count: 15,
+                    text: '15d'
+                }, {
+                    type: 'month',
+                    count: 1,
+                    text: '1m'
+                }, {
+                    type: 'month',
+                    count: 3,
+                    text: '3m'
+                }, {
+                    type: 'month',
+                    count: 6,
+                    text: '6m'
+                }],
+                selected: 0,
+                inputEnabled: false
+              },
+              title: {
+                text: 'Stock Price ' + query + ' ' + todayDate
+              },
+              yAxis: [  {
+                          opposite: false,
+                          labels: {
+                              align: 'right',
+                              x: -30
+                          },
+                          title: {
+                              text: 'Stock Price'
+                          },
+                          tickAmount: 6
+                        }, {
+                          opposite: true,
+                          labels: {
+                              align: 'left',
+                              x: 30
+                          },
+                          title: {
+                              text: 'Volume'
+                          },
+                          tickAmount: 6,
+                          max: 2 * maxVolume
+                        }
+                      ],
+              series: [{
+                  type: 'area',
+                  name: query,
+                  data: stockPriceVsDate,
+                  yAxis: 0,
+                  tooltip: {
+                    valueDecimals: 2
+                  },
+                  fillColor: {
+                      linearGradient: {
+                          x1: 0,
+                          y1: 0,
+                          x2: 0,
+                          y2: 1
+                      },
+                      stops: [
+                          [0, Highcharts.getOptions().colors[0]],
+                          [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                      ]
+                    },
+                    threshold: null
+                  }, {
+                  type: 'column',
+                  name: 'Volume',
+                  data: volumeVsDate,
+                  yAxis: 1,
+                  color: '#00000',
+                  pointWidth: 5
+              }],
+              plotOptions: {
+                series: {
+                  pointPlacement: 'on'
+                }
+              }
+            });
+          })();
+        })
+        .catch(error => console.error('Error:', error));
+</script>
+</body>
+</html>

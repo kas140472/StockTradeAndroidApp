@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charts Tab</title>
+    <!-- Include necessary libraries -->
+    <!--  <script src="https://code.highcharts.com/highcharts.js"></script>-->
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/stock/indicators/indicators.js"></script>
+    <script src="https://code.highcharts.com/stock/indicators/volume-by-price.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/accessibility.js"></script>
+</head>
+<body>
+
+<div class="container col-lg-10" style="margin-top: 10px;">
+    <div id="chartContainer" style="height: 350px;"></div>
+</div>
+
+<script>
+
+    function createEarningsChart(resultsData) {
+
+        const earningsData = resultsData;
+
+         const actualData: any[] = [];
+    const estimateData: any[] = [];
+    const periodData: any[] = [];
+    const surpriseData: any[] = [];
+    console.log("item0Earnings:", data[0]);
+    earningsData.forEach((item: any) => {
+      actualData.push(item.actual);
+      estimateData.push(item.estimate);
+      surpriseData.push(item.surprise);
+      console.log("actualData: ", actualData);
+      console.log("estimateData: ", estimateData);
+
+      const parts = item.period.split("-");
+
+      // Extract year, month, and day from the split parts
+      const year = parseInt(parts[0], 10);
+      const month = parseInt(parts[1], 10); // Adjust month since JavaScript months are zero-indexed
+      const day = parseInt(parts[2], 10);
+
+      // Constructing the date object with the extracted components
+      const date = new Date(year, month, day);
+      const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+
+      periodData.push(formattedDate);
+      console.log("periodData: ", periodData);
+    });
+
+    // this.stockEarnings = new StockChart({
+      // rangeSelector: {
+      //   selected: 2
+      // },
+    const options: Highcharts.Options = {
+      title: {
+        text: 'Historical EPS Surprises'
+      },
+      rangeSelector: {
+        enabled: false
+      },
+      navigator: {
+        enabled: false
+      },
+      scrollbar: {
+        enabled: false
+      },
+      chart: {
+        backgroundColor: '#F5F5F5',
+        marginLeft: 70,
+        marginRight: 70,
+
+      },
+      xAxis: {
+          categories: periodData,
+      },
+      yAxis: [{
+        labels: {
+          align: 'right',
+          x: -3
+        },
+        title: {
+          text: 'Quantity EPS'
+        },
+        lineWidth: 2
+      }],
+      tooltip: {
+        shared: true
+      },
+      plotOptions: {
+        spline: {
+            marker: {
+                radius: 4,
+                lineColor: '#666666',
+                lineWidth: 1
+            }
+        }
+      },
+      series: [{
+        type: 'spline',
+        name: 'Actual',
+        marker: {
+          symbol: 'square'
+        },
+        data: actualData,
+      },
+      {
+        type: 'spline',
+        name: 'Estimate',
+        marker: {
+          symbol: 'diamond'
+        },
+        data: estimateData,
+      }
+    ],
+    legend: {
+      enabled: true
+    }
+  };
+
+          }
+
+
+
+</script>
+
+</body>
+</html>

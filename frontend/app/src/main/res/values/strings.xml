@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">stockApp</string>
+    <string name="app_label">something1</string>
+    <string name="search_hint">someHint1</string>
+</resources>

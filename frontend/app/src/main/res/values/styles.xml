@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Your AppTheme or other themes/styles here -->
+    <style name="Base.Theme.StockApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Theme.StockApp" parent="Base.Theme.StockApp" />
+    <style name="AppTheme" parent="Base.Theme.StockApp" />
+    <!-- The launcher theme. It sets the main window background to the launch_screen drawable -->
+<!--    <style name="Theme.StockApp.Launcher">-->
+<!--        <item name="android:windowBackground">@drawable/launch_screen</item>-->
+<!--    &lt;!&ndash; Optional, on Android 5+ you can modify the colorPrimaryDark color to match the windowBackground color for further branding&ndash;&gt;-->
+<!--    &lt;!&ndash; <item name="colorPrimaryDark">@android:color/white</item> &ndash;&gt;-->
+<!--    </style>-->
+    <style name="AppTheme.Launcher" parent="Base.Theme.StockApp">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+    </style>
+<!--    <style name="Theme"></style>-->
+
+</resources>

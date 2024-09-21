@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charts Tab</title>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/stock/indicators/indicators.js"></script>
+    <script src="https://code.highcharts.com/stock/indicators/volume-by-price.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/accessibility.js"></script>
+</head>
+<body>
+
+<div class="container col-lg-10" style="margin-top: 10px;">
+    <div id="chartContainer" style="height: 350px;"></div>
+</div>
+
+<script>
+
+
+
+    function createHistoricalChart(resultsData, query) {
+
+        const dataArray = resultsData;
+        const ohlc = [];
+        const volume = [];
+
+
+        dataArray.forEach((item) => {
+            ohlc.push([
+                item.t,
+                item.o,
+                item.h,
+                item.l,
+                item.c
+            ]);
+
+            volume.push([
+                item.t,
+                item.v
+            ]);
+        });
+
+        Highcharts.stockChart('container', {
+              subtitle: {
+                  text: '<a class="polygon-link" href="https://polygon.io/" target="_blank">Source: Polygon.io</a>'
+              },
+              rangeSelector: {
+                buttons: [{
+                    type: 'day',
+                    count: 7,
+                    text: '7d'
+                }, {
+                    type: 'day',
+                    count: 15,
+                    text: '15d'
+                }, {
+                    type: 'month',
+                    count: 1,
+                    text: '1m'
+                }, {
+                    type: 'month',
+                    count: 3,
+                    text: '3m'
+                }, {
+                    type: 'month',
+                    count: 6,
+                    text: '6m'
+                }],
+                selected: 0,
+                inputEnabled: false
+              },
+              title: {
+                text: 'Stock Price ' + query + ' ' + todayDate
+              },
+              yAxis: [  {
+                          opposite: false,
+                          labels: {
+                              align: 'right',
+                              x: -30
+                          },
+                          title: {
+                              text: 'Stock Price'
+                          },
+                          tickAmount: 6
+                        }, {
+                          opposite: true,
+                          labels: {
+                              align: 'left',
+                              x: 30
+                          },
+                          title: {
+                              text: 'Volume'
+                          },
+                          tickAmount: 6,
+                          max: 2 * maxVolume
+                        }
+                      ],
+              series: [{
+                  type: 'area',
+                  name: query,
+                  data: stockPriceVsDate,
+                  yAxis: 0,
+                  tooltip: {
+                    valueDecimals: 2
+                  },
+                  fillColor: {
+                      linearGradient: {
+                          x1: 0,
+                          y1: 0,
+                          x2: 0,
+                          y2: 1
+                      },
+                      stops: [
+                          [0, Highcharts.getOptions().colors[0]],
+                          [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                      ]
+                    },
+                    threshold: null
+                  }, {
+                  type: 'column',
+                  name: 'Volume',
+                  data: volumeVsDate,
+                  yAxis: 1,
+                  color: '#00000',
+                  pointWidth: 5
+              }],
+              plotOptions: {
+                series: {
+                  pointPlacement: 'on'
+                }
+              }
+            });
+          })();
+        })
+        .catch(error => console.error('Error:', error));
+
+
+
+</script>
+
+</body>
+</html>

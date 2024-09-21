@@ -1,0 +1,15 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+<!--    <style name="Base.Theme.StockApp" parent="Theme.Material3.DayNight.NoActionBar">-->
+<!--        &lt;!&ndash; Customize your light theme here. &ndash;&gt;-->
+<!--        &lt;!&ndash; <item name="colorPrimary">@color/my_light_primary</item> &ndash;&gt;-->
+<!--    </style>-->
+
+<!--    <style name="Theme.StockApp" parent="Base.Theme.StockApp" />-->
+
+<!--    <style name="Theme.StockApp.Launcher">-->
+<!--        <item name="android:windowBackground">@drawable/launch_screen</item>-->
+<!--        &lt;!&ndash; Optional, on Android 5+ you can modify the colorPrimaryDark color to match the windowBackground color for further branding&ndash;&gt;-->
+<!--        &lt;!&ndash; <item name="colorPrimaryDark">@android:color/white</item> &ndash;&gt;-->
+<!--    </style>-->
+</resources>
